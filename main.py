@@ -1,4 +1,4 @@
-# !/usr/bin/python3
+#!/usr/bin/python3
 
 import os
 import yaml
@@ -15,20 +15,19 @@ from mrs_playground.behavior.mathematical_flock import MathematicalFlock
 from mrs_playground.environment.simple_playground import SimplePlayground
 from mrs_playground.environment.playground_factory import PlaygroundFactory
 
-from mr_herding.behavior.decentralised_apf import DecentralisedAPF
+from mr_herding.behavior.distributed_outmost_push import DistributedOutmostPush
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-CONFIG_DIR = os.path.join(PROJECT_DIR.replace('example', ''), 'config')
+CONFIG_DIR = os.path.join(PROJECT_DIR, 'config')
 
 
 def main():
-
     parser = argparse.ArgumentParser()
     parser.add_argument('-g', '--gui',
                         help='Render gui', action='store_true')
     args = parser.parse_args()
 
-    entity_config_file = os.path.join(CONFIG_DIR, 'entity_apf.yaml')
+    entity_config_file = os.path.join(CONFIG_DIR, 'entity_outmost.yaml')
     with open(entity_config_file, 'r') as file:
         entity_config = yaml.safe_load(file)
 
@@ -59,9 +58,7 @@ def main():
 
     # Spawn robots
     robots = PlaygroundFactory.spawn_entities(entity_config['robot'], Robot)
-
     # Add sensors and dynamics to robots
-    sensing_config['sensing_radius'] = behavior_config['herding_apf']['params']['sensing_range']
     sensors = PlaygroundFactory.add_sensing(entities=robots,
                                             config=sensing_config,
                                             sensing_type=RadiusSensing)
@@ -69,10 +66,14 @@ def main():
                                   config=dynamic_config,
                                   dynamic_type=SingleIntegrator)
     # Add behavior as well
+    behavior_config['outmost_push']['params'].update(
+        {"sensing_range": sensing_config["sensing_radius"]})
+
+    outmost_push_config = behavior_config['outmost_push']['params']
     PlaygroundFactory.add_behavior(entities=robots,
-                                   config=behavior_config['herding_apf']['params'],
-                                   behavior_type=DecentralisedAPF,
-                                   behavior_name="apf")
+                                   config=behavior_config['outmost_push']['params'],
+                                   behavior_type=DistributedOutmostPush,
+                                   behavior_name="outmost")
 
     # Add robots
     for robot in robots:
@@ -98,7 +99,6 @@ def main():
     while env.ok:
         env.step()
         env.render()
-
 
 if __name__ == '__main__':
     main()

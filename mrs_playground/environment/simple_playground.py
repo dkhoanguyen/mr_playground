@@ -81,8 +81,6 @@ class SimplePlayground(object):
         self._sensing_model.append(sensing_model)
 
     def display(self):
-        pygame.draw.circle(self._screen, pygame.Color("black"),
-                           tuple([552.7, 508.6]), 75, 2)
         entity: Entity
         for entities in self._entities.values():
             for entity in entities:
@@ -137,7 +135,7 @@ class SimplePlayground(object):
         self._data_to_save["data"].append(all_states.copy())
         self._current_t += 1
 
-    def render(self, fps=30):
+    def render(self, fps=60):
         if self._render:
             if not self._init:
                 pygame.init()
