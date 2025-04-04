@@ -9,7 +9,7 @@ from mr_playground.engine import EngineBase
 class IRSim(EngineBase):
     def __init__(self,
                  world_file: str = "world.yaml",
-                 fig_size: tuple = (6, 6),
+                 fig_size: tuple = (7, 7),
                  steps: int = 300):
         self._env = irsim.make(world_file)
         plt.gcf().set_size_inches(fig_size[0], fig_size[1])
@@ -30,7 +30,8 @@ class IRSim(EngineBase):
         return self._current_step <= self._steps
 
     def step(self):
-        self._env.step()
+        # self._env.step()
+        self._env._world.step()
 
     def render(self, dt: float = 0.01):
         self._env.render(interval=dt)

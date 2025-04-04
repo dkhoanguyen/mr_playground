@@ -2,7 +2,7 @@
 
 import numpy as np
 from gymnasium.spaces import Box
-from mr_playground.dynamic import DynamicsBase
+
 
 
 class DoubleIntegrator(DynamicsBase):

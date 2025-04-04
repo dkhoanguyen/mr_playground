@@ -1,0 +1,63 @@
+math_flock:
+  params:
+    follow_cursor: false
+    sensing_range: 70
+    danger_range: 150
+    initial_consensus: [800, 350]
+    max_v: 5
+    dt: 0.1
+    distance: 50
+    target: [350, 350]
+  constants:
+    c1_alpha: 3
+    c1_beta: 20
+    c1_gamma: 5
+    c1_delta: 20
+
+herding_apf:
+  params:
+    Cs: 2
+    Cr: 0.00001
+    Cv: 0.
+    Co: 0.1
+    distance_to_target: 140.0
+    interagent_spacing: 170.0
+    obstacle_range: 40.0
+    sensing_range: 1000.0
+    herding_target: [350, 350]
+
+    potential_func:
+      edge_follow:
+        attract: True
+        repulse: True
+        c: 8
+        m: 2
+      col_avoid:
+        attract: False
+        repulse: True
+        c: 10
+        m: 2
+      obs_avoid:
+        attract: True
+        repulse: True
+        c: 8
+        m: 10
+
+herding_cbf:
+  params:
+    max_u: 10
+    min_robot_d: 170
+    max_robot_d: 180
+    min_animal_d: 150
+    max_animal_d: 170
+    collision_avoidance_d: 120
+    converge_std: 20
+    herding_target: [350, 350]
+    coverage: 0.5
+
+outmost_push:
+  params:
+    max_u: 10
+    sensing_range: 1000
+    collision_avoidance_d: 50
+    herding_target: [350, 350]
